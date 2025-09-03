@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Google Sheets Demo</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f4f6f8;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+   justify-content: center; /* <-- centers vertically */
+    min-height: 100vh;
+    margin: 0;
+    padding: 30px;
+  }
+
+  /* Centered button container */
+  .btn-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px; /* spacing between buttons */
+    margin: 20px 0;
+  }
+
+  button {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+
+  button:hover {
+    background: #0056b3;
+  }
+
+  #output {
+    margin-top: 20px;
+    background: #fff;
+    border: 1px solid #ccc;
+    padding: 15px;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 600px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    box-shadow: 0px 3px 6px rgba(0,0,0,0.1);
+  }
+</style>
+
+</head>
+<body>
+
+  <!-- Buttons Centered -->
+  <div class="btn-container">
+    <button id="saveBtn">💾 Save Data</button>
+    <button id="fetchBtn">📂 Fetch Data</button>
+  </div>
+
+  <!-- Output -->
+  <pre id="output">Click "Fetch Data" to see results here...</pre>
+
+<script>
+const scriptURL = "https://script.google.com/macros/s/AKfycbyA1hOybu9nr1rxwkFBLcG1lyVsNG4ij0qZAduQYkQR8mQGEfs5it2mk3KuVHQnBoOi/exec"; // paste your Web App URL here
+
+  document.getElementById("saveBtn").addEventListener("click", () => {
+    const payload = { name: "John Doe", score: 95 };
+
+    fetch(scriptURL, {
+      method: "POST",
+      body: JSON.stringify(payload)
+    })
+    .then(res => res.text())
+    .then(msg => alert(msg))
+    .catch(err => console.error("Error:", err));
+  });
+
+
+  // Fetch Data
+  document.getElementById("fetchBtn").addEventListener("click", () => {
+  fetch(scriptURL)
+    .then(res => res.json()) // expect JSON
+    .then(data => {
+      console.log("Fetched Data:", data);
+      document.getElementById("output").textContent = JSON.stringify(data, null, 2);
+    })
+    .catch(err => console.error("Error:", err));
+});
+</script>
+
+</body>
+</html>
